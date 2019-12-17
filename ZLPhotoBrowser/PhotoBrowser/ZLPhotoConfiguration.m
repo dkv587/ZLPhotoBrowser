@@ -39,6 +39,9 @@
     configuration.allowEditImage = YES;
     configuration.allowEditVideo = NO;
     configuration.allowSelectOriginal = YES;
+    configuration.allowShowSelectImageTotalSize = YES;
+    configuration.allowPreviewSelectImage = YES;
+    configuration.customSelectOriginalButtonSize = CGSizeMake(GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText), 15, YES, 30.f)+25, 30.f);
     configuration.maxEditVideoTime = 10;
     configuration.maxVideoDuration = 120;
     configuration.allowSlideSelect = YES;

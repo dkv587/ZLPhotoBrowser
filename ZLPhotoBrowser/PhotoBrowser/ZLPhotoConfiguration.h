@@ -115,6 +115,26 @@
 @property (nonatomic, assign) BOOL allowSelectOriginal;
 
 /**
+ *  是否显示原图后选择的中图片大小信息，默认YES
+ */
+@property (nonatomic, assign) BOOL allowShowSelectImageTotalSize;
+
+/**
+ *  是否允许通过新增底部预览按钮进行预览已经选择的图片，默认YES
+ */
+@property (nonatomic, assign) BOOL allowPreviewSelectImage;
+
+/**
+ *  传入自定义是否允许选择原图按钮，默认nil
+ */
+@property (nonatomic, strong) UIButton *customSelectOriginalButton;
+
+/**
+ *  传入自定义是否允许选择原图按钮的大小，默认就为原始原图大小
+ */
+@property (nonatomic, assign) CGSize customSelectOriginalButtonSize;
+
+/**
  编辑视频时最大裁剪时间，单位：秒，默认10s 且最低10s
  
  @discussion 当该参数为10s时，所选视频时长必须大于等于10s才允许进行编辑

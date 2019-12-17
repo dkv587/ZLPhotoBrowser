@@ -218,14 +218,20 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.btnEdit.frame = CGRectMake(offsetX, 7, GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserEditText), 15, YES, bottomBtnH), bottomBtnH);
         offsetX = CGRectGetMaxX(self.btnEdit.frame) + 10;
     }
-    self.btnPreView.frame = CGRectMake(offsetX, 7, GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserPreviewText), 15, YES, bottomBtnH), bottomBtnH);
-    offsetX = CGRectGetMaxX(self.btnPreView.frame) + 10;
+    
+    if (configuration.allowPreviewSelectImage && configuration.allowSelectImage) {
+        self.btnPreView.frame = CGRectMake(offsetX, 7, GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserPreviewText), 15, YES, bottomBtnH), bottomBtnH);
+        offsetX = CGRectGetMaxX(self.btnPreView.frame) + 10;
+    }
     
     if (configuration.allowSelectOriginal && configuration.allowSelectImage) {
-        self.btnOriginalPhoto.frame = CGRectMake(offsetX, 7, GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText), 15, YES, bottomBtnH)+25, bottomBtnH);
+        CGSize originalButtonSize = configuration.customSelectOriginalButtonSize;
+        self.btnOriginalPhoto.frame = CGRectMake(offsetX, 7, originalButtonSize.width, originalButtonSize.height);
         offsetX = CGRectGetMaxX(self.btnOriginalPhoto.frame) + 5;
         
-        self.labPhotosBytes.frame = CGRectMake(offsetX, 7, 80, bottomBtnH);
+        if (configuration.allowShowSelectImageTotalSize) {
+            self.labPhotosBytes.frame = CGRectMake(offsetX, 7, 80, bottomBtnH);
+        }
     }
     
     CGFloat doneWidth = GetMatchValue(self.btnDone.currentTitle, 15, YES, bottomBtnH);
@@ -289,7 +295,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
         [self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(ZLPhotoBrowserDoneText), nav.arrSelectedModels.count] forState:UIControlStateNormal];
         [self.btnDone setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
-        [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
+        if (!configuration.customSelectOriginalButton) {
+            [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
+        }
         [self.btnPreView setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
         self.btnDone.backgroundColor = configuration.bottomBtnsNormalBgColor;
     } else {
@@ -300,7 +308,9 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.labPhotosBytes.text = nil;
         [self.btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateDisabled];
         [self.btnDone setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
-        [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
+        if (!configuration.customSelectOriginalButton) {
+            [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
+        }
         [self.btnPreView setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
         self.btnDone.backgroundColor = configuration.bottomBtnsDisableBgColor;
     }
@@ -383,25 +393,33 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         [self.bottomView addSubview:self.btnEdit];
     }
     
-    self.btnPreView = [UIButton buttonWithType:UIButtonTypeCustom];
-    self.btnPreView.titleLabel.font = [UIFont systemFontOfSize:15];
-    [self.btnPreView setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserPreviewText) forState:UIControlStateNormal];
-    [self.btnPreView addTarget:self action:@selector(btnPreview_Click:) forControlEvents:UIControlEventTouchUpInside];
-    [self.bottomView addSubview:self.btnPreView];
+    if (configuration.allowPreviewSelectImage || configuration.allowSelectImage) {
+        self.btnPreView = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnPreView.titleLabel.font = [UIFont systemFontOfSize:15];
+        [self.btnPreView setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserPreviewText) forState:UIControlStateNormal];
+        [self.btnPreView addTarget:self action:@selector(btnPreview_Click:) forControlEvents:UIControlEventTouchUpInside];
+        [self.bottomView addSubview:self.btnPreView];
+    }
     
     if (configuration.allowSelectOriginal) {
-        self.btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
-        self.btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
-        [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_circle") forState:UIControlStateNormal];
-        [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_selected") forState:UIControlStateSelected];
-        [self.btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];
+        if (configuration.customSelectOriginalButton) {
+            self.btnOriginalPhoto = configuration.customSelectOriginalButton;
+        } else {
+            self.btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
+            self.btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
+            [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_circle") forState:UIControlStateNormal];
+            [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_selected") forState:UIControlStateSelected];
+            [self.btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];;
+        }
         [self.btnOriginalPhoto addTarget:self action:@selector(btnOriginalPhoto_Click:) forControlEvents:UIControlEventTouchUpInside];
         [self.bottomView addSubview:self.btnOriginalPhoto];
-        
-        self.labPhotosBytes = [[UILabel alloc] init];
-        self.labPhotosBytes.font = [UIFont systemFontOfSize:15];
-        self.labPhotosBytes.textColor = configuration.bottomBtnsNormalTitleColor;
-        [self.bottomView addSubview:self.labPhotosBytes];
+
+        if (configuration.allowShowSelectImageTotalSize) {
+            self.labPhotosBytes = [[UILabel alloc] init];
+            self.labPhotosBytes.font = [UIFont systemFontOfSize:15];
+            self.labPhotosBytes.textColor = configuration.bottomBtnsNormalTitleColor;
+            [self.bottomView addSubview:self.labPhotosBytes];
+        }
     }
     
     self.btnDone = [UIButton buttonWithType:UIButtonTypeCustom];
