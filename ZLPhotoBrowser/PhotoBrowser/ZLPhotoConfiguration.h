@@ -125,16 +125,6 @@
 @property (nonatomic, assign) BOOL allowPreviewSelectImage;
 
 /**
- *  传入自定义是否允许选择原图按钮，默认nil
- */
-@property (nonatomic, strong) UIButton *customSelectOriginalButton;
-
-/**
- *  传入自定义是否允许选择原图按钮的大小，默认就为原始原图大小
- */
-@property (nonatomic, assign) CGSize customSelectOriginalButtonSize;
-
-/**
  编辑视频时最大裁剪时间，单位：秒，默认10s 且最低10s
  
  @discussion 当该参数为10s时，所选视频时长必须大于等于10s才允许进行编辑
@@ -234,6 +224,26 @@
  底部工具栏按钮 不可交互 状态背景颜色，默认rgb(39, 80, 32)
  */
 @property (nonatomic, strong) UIColor *bottomBtnsDisableBgColor;
+
+/**
+ 底部工具栏是否选择原图按钮普通状态文本颜色，默认 white
+ */
+@property (nonatomic, strong) UIColor *selectOriginalButtonNormalTitleColor;
+
+/**
+ 底部工具栏是否选择原图按钮不可用状态文本颜色，默认 white
+ */
+@property (nonatomic, strong) UIColor *selectOriginalButtonDisabledTitleColor;
+
+/**
+ 底部工具栏是否选择原图按钮文本字体大小，默认 15.f
+ */
+@property (nonatomic, strong) UIFont *selectOriginalButtonTitleFont;
+
+/**
+ 底部工具栏是否选择原图按钮不可用状态文本颜色，默认 UIEdgeInsetsZero
+ */
+@property (nonatomic, assign) UIEdgeInsets selectOriginalButtonTitleEdgeInset;
 
 /**
  是否在已选择的图片上方覆盖一层已选中遮罩层，默认 NO

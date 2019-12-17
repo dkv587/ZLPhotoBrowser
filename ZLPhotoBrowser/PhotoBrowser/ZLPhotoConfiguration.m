@@ -41,7 +41,6 @@
     configuration.allowSelectOriginal = YES;
     configuration.allowShowSelectImageTotalSize = YES;
     configuration.allowPreviewSelectImage = YES;
-    configuration.customSelectOriginalButtonSize = CGSizeMake(GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText), 15, YES, 30.f)+25, 30.f);
     configuration.maxEditVideoTime = 10;
     configuration.maxVideoDuration = 120;
     configuration.allowSlideSelect = YES;
@@ -65,6 +64,10 @@
     configuration.bottomBtnsDisableTitleColor = kRGB(168, 168, 168);
     configuration.bottomBtnsNormalBgColor = kRGB(80, 169, 52);
     configuration.bottomBtnsDisableBgColor = kRGB(39, 80, 32);
+    configuration.selectOriginalButtonNormalTitleColor = [UIColor whiteColor];
+    configuration.selectOriginalButtonDisabledTitleColor = [UIColor whiteColor];
+    configuration.selectOriginalButtonTitleFont = [UIFont systemFontOfSize:15.f];
+    configuration.selectOriginalButtonTitleEdgeInset = UIEdgeInsetsZero;
     configuration.showSelectedMask = NO;
     configuration.selectedMaskColor = [[UIColor blackColor] colorWithAlphaComponent:0.2];
     configuration.showSelectedIndex = YES;

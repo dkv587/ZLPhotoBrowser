@@ -159,9 +159,8 @@
     CGRect frame = CGRectMake(0, kViewHeight-44-inset.bottom, kViewWidth, 44+inset.bottom);
     _bottomView.frame = frame;
     
-    ZLPhotoConfiguration *configuration = [(ZLImageNavigationController *)self.navigationController configuration];
-    CGSize originalButtonSize = configuration.customSelectOriginalButtonSize;
-    _btnOriginalPhoto.frame = CGRectMake(12+inset.left, 7, originalButtonSize.width, originalButtonSize.height);
+    CGFloat btnOriWidth = GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText), 15, YES, 30);
+    _btnOriginalPhoto.frame = CGRectMake(12+inset.left, 7, btnOriWidth+25, 30);
     self.labPhotosBytes.frame = CGRectMake(CGRectGetMaxX(_btnOriginalPhoto.frame)+5, 7, 80, 30);
     _btnEdit.frame = CGRectMake(frame.size.width/2-30, 7, 60, 30);
     _btnDone.frame = CGRectMake(frame.size.width-82-inset.right, 7, 70, 30);
@@ -299,19 +298,16 @@
     _bottomView.backgroundColor = configuration.bottomViewBgColor;
     
     if (configuration.allowSelectOriginal) {
-        if (configuration.customSelectOriginalButton) {
-            _btnOriginalPhoto = configuration.customSelectOriginalButton;
-        } else {
-            _btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
-            [_btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];
-            _btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
-            [_btnOriginalPhoto setTitleColor:configuration.bottomBtnsNormalTitleColor forState: UIControlStateNormal];
-            UIImage *normalImg = GetImageWithName(@"zl_btn_original_circle");
-            UIImage *selImg = GetImageWithName(@"zl_btn_original_selected");
-            [_btnOriginalPhoto setImage:normalImg forState:UIControlStateNormal];
-            [_btnOriginalPhoto setImage:selImg forState:UIControlStateSelected];
-            [_btnOriginalPhoto setImageEdgeInsets:UIEdgeInsetsMake(0, -5, 0, 5)];
-        }
+        _btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];
+        _btnOriginalPhoto.titleLabel.font = configuration.selectOriginalButtonTitleFont;
+        [_btnOriginalPhoto setTitleColor:configuration.selectOriginalButtonNormalTitleColor forState:UIControlStateNormal];
+        [_btnOriginalPhoto setTitleColor:configuration.selectOriginalButtonDisabledTitleColor forState:UIControlStateDisabled];
+        UIImage *normalImg = GetImageWithName(@"zl_btn_original_circle");
+        UIImage *selImg = GetImageWithName(@"zl_btn_original_selected");
+        [_btnOriginalPhoto setImage:normalImg forState:UIControlStateNormal];
+        [_btnOriginalPhoto setImage:selImg forState:UIControlStateSelected];
+        [_btnOriginalPhoto setTitleEdgeInsets:configuration.selectOriginalButtonTitleEdgeInset];
         [_btnOriginalPhoto addTarget:self action:@selector(btnOriginalImage_Click:) forControlEvents:UIControlEventTouchUpInside];
         _btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
         [self getPhotosBytes];

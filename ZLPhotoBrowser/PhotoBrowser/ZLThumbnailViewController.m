@@ -225,8 +225,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     }
     
     if (configuration.allowSelectOriginal && configuration.allowSelectImage) {
-        CGSize originalButtonSize = configuration.customSelectOriginalButtonSize;
-        self.btnOriginalPhoto.frame = CGRectMake(offsetX, 7, originalButtonSize.width, originalButtonSize.height);
+        self.btnOriginalPhoto.frame = CGRectMake(offsetX, 7, GetMatchValue(GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText), 15, YES, bottomBtnH)+25, bottomBtnH);
         offsetX = CGRectGetMaxX(self.btnOriginalPhoto.frame) + 5;
         
         if (configuration.allowShowSelectImageTotalSize) {
@@ -295,9 +294,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.btnOriginalPhoto.selected = nav.isSelectOriginalPhoto;
         [self.btnDone setTitle:[NSString stringWithFormat:@"%@(%ld)", GetLocalLanguageTextValue(ZLPhotoBrowserDoneText), nav.arrSelectedModels.count] forState:UIControlStateNormal];
         [self.btnDone setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
-        if (!configuration.customSelectOriginalButton) {
-            [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
-        }
+        [self.btnOriginalPhoto setTitleColor:configuration.selectOriginalButtonNormalTitleColor forState:UIControlStateNormal];
         [self.btnPreView setTitleColor:configuration.bottomBtnsNormalTitleColor forState:UIControlStateNormal];
         self.btnDone.backgroundColor = configuration.bottomBtnsNormalBgColor;
     } else {
@@ -308,9 +305,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         self.labPhotosBytes.text = nil;
         [self.btnDone setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserDoneText) forState:UIControlStateDisabled];
         [self.btnDone setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
-        if (!configuration.customSelectOriginalButton) {
-            [self.btnOriginalPhoto setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
-        }
+        [self.btnOriginalPhoto setTitleColor:configuration.selectOriginalButtonDisabledTitleColor forState:UIControlStateDisabled];
         [self.btnPreView setTitleColor:configuration.bottomBtnsDisableTitleColor forState:UIControlStateDisabled];
         self.btnDone.backgroundColor = configuration.bottomBtnsDisableBgColor;
     }
@@ -402,16 +397,13 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     }
     
     if (configuration.allowSelectOriginal) {
-        if (configuration.customSelectOriginalButton) {
-            self.btnOriginalPhoto = configuration.customSelectOriginalButton;
-        } else {
-            self.btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
-            self.btnOriginalPhoto.titleLabel.font = [UIFont systemFontOfSize:15];
-            [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_circle") forState:UIControlStateNormal];
-            [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_selected") forState:UIControlStateSelected];
-            [self.btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];;
-        }
+        self.btnOriginalPhoto = [UIButton buttonWithType:UIButtonTypeCustom];
+        self.btnOriginalPhoto.titleLabel.font = configuration.selectOriginalButtonTitleFont;
+        [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_circle") forState:UIControlStateNormal];
+        [self.btnOriginalPhoto setImage:GetImageWithName(@"zl_btn_original_selected") forState:UIControlStateSelected];
+        [self.btnOriginalPhoto setTitle:GetLocalLanguageTextValue(ZLPhotoBrowserOriginalText) forState:UIControlStateNormal];;
         [self.btnOriginalPhoto addTarget:self action:@selector(btnOriginalPhoto_Click:) forControlEvents:UIControlEventTouchUpInside];
+        self.btnOriginalPhoto.titleEdgeInsets = configuration.selectOriginalButtonTitleEdgeInset;
         [self.bottomView addSubview:self.btnOriginalPhoto];
 
         if (configuration.allowShowSelectImageTotalSize) {
