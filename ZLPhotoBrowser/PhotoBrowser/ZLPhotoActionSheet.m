@@ -315,6 +315,39 @@ double const ScalePhotoWidth = 1000;
     };
 }
 
+- (void)editImageWithAsset:(PHAsset *)asset success:(void (^)(UIImage * _Nonnull, PHAsset * _Nonnull))success cancel:(void (^)(void))cancel
+{
+    ZLPhotoModel *model = [ZLPhotoModel modelWithAsset:asset type:[ZLPhotoManager transformAssetType:asset] duration:@""];
+    ZLEditViewController *vc = [[ZLEditViewController alloc] init];
+    ZLImageNavigationController *nav = [self getImageNavWithRootVC:vc];
+    
+    @zl_weakify(self);
+    __weak typeof(ZLImageNavigationController *) weakNav = nav;
+    vc.editResultBlock = ^(UIImage *result, PHAsset *asset) {
+        @zl_strongify(self);
+        if (success) {
+            success(result, asset);
+        }
+        [weakNav dismissViewControllerAnimated:YES completion:nil];
+        [self hide];
+    };
+    
+    vc.cancelEditBlock = ^{
+        @zl_strongify(self);
+        if (cancel) cancel();
+        [weakNav dismissViewControllerAnimated:YES completion:nil];
+        [self hide];
+    };
+    
+    nav.callSelectImageBlock = nil;
+    nav.callSelectClipImageBlock = nil;
+    nav.cancelBlock = nil;
+    
+    [nav.arrSelectedModels addObject:model];
+    vc.model = model;
+    [self.sender showDetailViewController:nav sender:nil];
+}
+
 - (void)loadPhotoFromAlbum
 {
     [self.arrDataSources removeAllObjects];
@@ -1015,29 +1048,25 @@ double const ScalePhotoWidth = 1000;
     if (image) {
         [ZLPhotoManager saveImageToAblum:image completion:^(BOOL suc, PHAsset *asset) {
             @zl_strongify(self);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (suc) {
-                    ZLPhotoModel *model = [ZLPhotoModel modelWithAsset:asset type:ZLAssetMediaTypeImage duration:nil];
-                    [self handleDataArray:model];
-                } else {
-                    ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowserSaveImageErrorText));
-                }
-                [hud hide];
-            });
+            if (suc) {
+                ZLPhotoModel *model = [ZLPhotoModel modelWithAsset:asset type:ZLAssetMediaTypeImage duration:nil];
+                [self handleDataArray:model];
+            } else {
+                ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowserSaveImageErrorText));
+            }
+            [hud hide];
         }];
     } else if (videoUrl) {
         [ZLPhotoManager saveVideoToAblum:videoUrl completion:^(BOOL suc, PHAsset *asset) {
             @zl_strongify(self);
-            dispatch_async(dispatch_get_main_queue(), ^{
-                if (suc) {
-                    ZLPhotoModel *model = [ZLPhotoModel modelWithAsset:asset type:ZLAssetMediaTypeVideo duration:nil];
-                    model.duration = [ZLPhotoManager getDuration:asset];
-                    [self handleDataArray:model];
-                } else {
-                    ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowserSaveVideoFailed));
-                }
-                [hud hide];
-            });
+            if (suc) {
+                ZLPhotoModel *model = [ZLPhotoModel modelWithAsset:asset type:ZLAssetMediaTypeVideo duration:nil];
+                model.duration = [ZLPhotoManager getDuration:asset];
+                [self handleDataArray:model];
+            } else {
+                ShowToastLong(@"%@", GetLocalLanguageTextValue(ZLPhotoBrowserSaveVideoFailed));
+            }
+            [hud hide];
         }];
     }
 }
