@@ -511,7 +511,7 @@ double const ScalePhotoWidth = 1000;
 - (IBAction)btnCamera_Click:(id)sender
 {
     if (![ZLPhotoManager haveCameraAuthority]) {
-        NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoCameraAuthorityText), kAPPName];
+        NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoCameraAuthorityText), kAPPName, kAPPName];
         ShowAlert(message, self.sender);
         [self hide];
         return;
@@ -542,7 +542,7 @@ double const ScalePhotoWidth = 1000;
         }
     } else {
         if (![ZLPhotoManager haveMicrophoneAuthority]) {
-            NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoMicrophoneAuthorityText), kAPPName];
+            NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoMicrophoneAuthorityText), kAPPName, kAPPName];
             ShowAlert(message, self.sender);
             [self hide];
             return;

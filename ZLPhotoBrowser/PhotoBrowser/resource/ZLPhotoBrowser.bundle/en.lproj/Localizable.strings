@@ -32,9 +32,9 @@
 "ZLPhotoBrowserMaxVideoSelectCountInMix" = "Video max select count: %ld";
 "ZLPhotoBrowserMinVideoSelectCountInMix" = "Video min select count: %ld";
 
-"ZLPhotoBrowserNoCameraAuthorityText" = "Please allow %@ to access your device's camera in \"Settings\"->\"Privacy\"->\"Camera\"";
-"ZLPhotoBrowserNoAblumAuthorityText" = "Allow %@ to access your ablum in \"Settings\"->\"Privacy\"->\"Photos\"";
-"ZLPhotoBrowserNoMicrophoneAuthorityText" = "Please allow %@ to access your device's microphone in \"Settings\"->\"Privacy\"->\"Camera\"";
+"ZLPhotoBrowserNoCameraAuthorityText" = "Please allow %@ to access your device's camera in \"Settings\"->\"%@\"";
+"ZLPhotoBrowserNoAblumAuthorityText" = "Allow %@ to access your ablum in \"Settings\"->\"%@\"";
+"ZLPhotoBrowserNoMicrophoneAuthorityText" = "Please allow %@ to access your device's microphone in \"Settings\"->\"%@\""";
 
 "ZLPhotoBrowseriCloudPhotoText" = "Retry after download in photo ablum";
 "ZLPhotoBrowseriCloudVideoText" = "Unable to sync from iCloud";

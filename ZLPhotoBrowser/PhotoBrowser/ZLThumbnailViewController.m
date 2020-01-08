@@ -928,7 +928,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
     ZLPhotoConfiguration *configuration = [(ZLImageNavigationController *)self.navigationController configuration];
     
     if (![ZLPhotoManager haveCameraAuthority]) {
-        NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoCameraAuthorityText), kAPPName];
+        NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoCameraAuthorityText), kAPPName, kAPPName];
         ShowAlert(message, self);
         return;
     }
@@ -958,7 +958,7 @@ typedef NS_ENUM(NSUInteger, SlideSelectType) {
         }
     } else {
         if (![ZLPhotoManager haveMicrophoneAuthority]) {
-            NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoMicrophoneAuthorityText), kAPPName];
+            NSString *message = [NSString stringWithFormat:GetLocalLanguageTextValue(ZLPhotoBrowserNoMicrophoneAuthorityText), kAPPName, kAPPName];
             ShowAlert(message, self);
             return;
         }

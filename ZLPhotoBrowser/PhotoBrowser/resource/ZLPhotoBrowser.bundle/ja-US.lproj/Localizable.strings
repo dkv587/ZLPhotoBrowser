@@ -32,9 +32,9 @@
 "ZLPhotoBrowserMaxVideoSelectCountInMix" = "動画の最大選択数: %ld";
 "ZLPhotoBrowserMinVideoSelectCountInMix" = "動画の最小選択数: %ld";
 
-"ZLPhotoBrowserNoCameraAuthorityText" = "「設定」->「プライパシー」->「カメラ」から、%@があなたのデバイスのカメラにアクセスする許可をしてください";
-"ZLPhotoBrowserNoAblumAuthorityText" = "%@があなたのアルバムにアクセスするには「設定」->「プライバシー」->「写真」";
-"ZLPhotoBrowserNoMicrophoneAuthorityText" = "「設定」->「プライパシー」->「カメラ」から、%@があなたのデバイスのマイクにアクセスする許可をしてください";
+"ZLPhotoBrowserNoCameraAuthorityText" = "「設定」->「%@」から、%@があなたのデバイスのカメラにアクセスする許可をしてください";
+"ZLPhotoBrowserNoAblumAuthorityText" = "%@があなたのアルバムにアクセスするには「設定」->「%@」";
+"ZLPhotoBrowserNoMicrophoneAuthorityText" = "「設定」->「%@」から、%@があなたのデバイスのマイクにアクセスする許可をしてください";
 
 "ZLPhotoBrowseriCloudPhotoText" = "写真のライブラリをダウンロードした後の再試行";
 "ZLPhotoBrowseriCloudVideoText" = "iCloudから同期できません";
