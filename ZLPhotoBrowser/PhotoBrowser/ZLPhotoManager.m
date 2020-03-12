@@ -32,8 +32,12 @@ static BOOL _sortAscending;
         if (completion) completion(NO, nil);
     } else if (status == PHAuthorizationStatusRestricted) {
         if (completion) completion(NO, nil);
-    } else {
-        __block PHObjectPlaceholder *placeholderAsset=nil;
+    } else if (status == PHAuthorizationStatusNotDetermined) {
+        [PHPhotoLibrary requestAuthorization:^(PHAuthorizationStatus status) {
+            [ZLPhotoManager saveImageToAblum:image completion:completion];
+        }];
+    } else if (status == PHAuthorizationStatusAuthorized) {
+        __block PHObjectPlaceholder *placeholderAsset = nil;
         [[PHPhotoLibrary sharedPhotoLibrary] performChanges:^{
             PHAssetChangeRequest *newAssetRequest = [PHAssetChangeRequest creationRequestForAssetFromImage:image];
             placeholderAsset = newAssetRequest.placeholderForCreatedAsset;
